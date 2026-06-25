@@ -8,20 +8,22 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JWT_SECRET = 'zarah_secret_key_123';
+// JWT Secret එක Environment Variable එකකින් ගන්නවා
+const JWT_SECRET = process.env.JWT_SECRET || 'zarah_secret_key_123';
 
-// MongoDB Connection
-const mongoURI = process.env.MONGO_URI || 'mongodb://mongo:27017/zarahhandmade';
-mongoose.connect(mongoURI);
+// MongoDB Connection එක Environment Variable එකකින් ගන්නවා
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/zarahhandmade';
+mongoose.connect(mongoURI)
+    .then(() => console.log("MongoDB Connected Successfully!"))
+    .catch(err => console.log("MongoDB Connection Error: ", err));
 
-// 1. User Schema
+// ---- SCHEMAS ----
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, default: 'customer' }
 });
 const User = mongoose.model('User', UserSchema);
-
 
 const ProductSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -32,7 +34,6 @@ const ProductSchema = new mongoose.Schema({
 });
 const Product = mongoose.model('Product', ProductSchema);
 
-// 3. Order Schema
 const OrderSchema = new mongoose.Schema({
     userId: String,
     username: String,
@@ -44,7 +45,11 @@ const OrderSchema = new mongoose.Schema({
 });
 const Order = mongoose.model('Order', OrderSchema);
 
-// ---- AUTH ROUTES ----
+// ---- API ROUTES ----
+app.get('/', (req, res) => {
+    res.send('Zarah Handmade Backend is Running Successfully!');
+});
+
 app.post('/api/auth/register', async (req, res) => {
     try {
         const { username, password, role } = req.body;
@@ -72,7 +77,6 @@ app.post('/api/auth/login', async (req, res) => {
         res.status(500).json({ error: "Login failed" });
     }
 });
-
 
 app.post('/api/products', async (req, res) => {
     try {
@@ -102,7 +106,6 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 });
 
-// ---- ORDER ROUTES ----
 app.post('/api/orders', async (req, res) => {
     try {
         const newOrder = new Order(req.body);
@@ -137,4 +140,8 @@ app.delete('/api/orders/:id', async (req, res) => {
     }
 });
 
-app.listen(5000, () => console.log('Backend running on port 5000'));
+// Port settings
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+
+module.exports = app;
