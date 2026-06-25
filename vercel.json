@@ -1,12 +1,9 @@
 {
-  "experimentalServices": {
-    "frontend": {
-      "root": "frontend",
-      "routes": "/*"
-    },
-    "backend": {
-      "root": "backend",
-      "routes": "/api/*"
-    }
-  }
+  "version": 2,
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "server.js" }
+  ]
 }
