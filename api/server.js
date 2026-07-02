@@ -142,6 +142,9 @@ app.delete('/api/orders/:id', async (req, res) => {
 
 // Port settings
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+}
 
 module.exports = app;
