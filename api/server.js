@@ -8,10 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// JWT Secret එක Environment Variable එකකින් ගන්නවා
+// JWT Secret Key
 const JWT_SECRET = process.env.JWT_SECRET || 'zarah_secret_key_123';
 
-// MongoDB Connection එක Environment Variable එකකින් ගන්නවා
+// MongoDB Connection
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/zarahhandmade';
 mongoose.connect(mongoURI)
     .then(() => console.log("MongoDB Connected Successfully!"))
@@ -141,7 +141,6 @@ app.delete('/api/orders/:id', async (req, res) => {
 });
 
 // Port settings
-const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
