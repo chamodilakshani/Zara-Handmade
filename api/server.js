@@ -12,7 +12,7 @@ app.use(express.json());
 const JWT_SECRET = process.env.JWT_SECRET || 'zarah_secret_key_123';
 
 // MongoDB Connection
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/zarahhandmade';
+const mongoURI = process.env.MONGO_URI || 'mongodb+srv://zara_handmade:Zara1030@cluster0.fwlxozf.mongodb.net/?appName=Cluster0';
 mongoose.connect(mongoURI)
     .then(() => console.log("MongoDB Connected Successfully!"))
     .catch(err => console.log("MongoDB Connection Error: ", err));
